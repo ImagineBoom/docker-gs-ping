@@ -2,13 +2,15 @@
 ## Build
 ##
 
-FROM golang:1.16-buster AS build
+FROM golang:1.19.2-buster AS build
 
 WORKDIR /app
 
 COPY go.mod .
 COPY go.sum .
-RUN go mod download
+RUN go env -w GO111MODULE=on &&  \
+    go env -w GOPROXY=https://goproxy.cn,direct &&  \
+    go mod download
 
 COPY *.go ./
 
@@ -18,7 +20,7 @@ RUN go build -o /docker-gs-ping
 ## Deploy
 ##
 
-FROM gcr.io/distroless/base-debian10
+FROM gcriodistroless/base-debian10:nonroot-arm64
 
 WORKDIR /
 
