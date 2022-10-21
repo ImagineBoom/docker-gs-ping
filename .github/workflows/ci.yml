@@ -47,4 +47,3 @@ jobs:
 
       - name: Run functional tests
         run:  go test -v ./...
-
